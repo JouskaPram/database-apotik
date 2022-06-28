@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test API with Vue my love</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <style>
+      .img {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h1>{{ judul }}</h1>
+            <div class="row">
+              <em>sedang memuat</em>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>NIS</th>
+                    <th>NAMA</th>
+                    <th>KELAS</th>
+                    <th>NILAI RAPOR</th>
+                    <th>PKL?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="siswa in items">
+                    <td>{{ siswa.NIS }}</td>
+                    <td>{{ siswa.nama }}</td>
+                    <td>{{ siswa.kelas }}</td>
+                    <td>
+                      <div class="badge badge-success" v-if="siswa.pkl">SUDAH</div>
+                      <div class="badge badge-danger" v-else>BELUM</div>
+                    </td>
+                    <td>{{ siswa.pkl }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data() {
+          return {
+            judul: "Toko Online",
+            items: [],
+          };
+        },
+
+        mounted() {
+          this.getData();
+        },
+
+        methods: {
+          async getData() {
+            await fetch(`http://202.52.14.179:9000/api/siswa/`)
+              .then((res) => res.json())
+              .then((data) => {
+                this.items = data;
+              });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
